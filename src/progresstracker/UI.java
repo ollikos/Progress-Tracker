@@ -24,6 +24,8 @@
 
 package progresstracker;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * 
@@ -31,7 +33,8 @@ import javax.swing.*;
  */
 public class UI extends JFrame {
     private JTabbedPane tabbedPane;
-    private JPanel testiPaneeli;
+    private JPanel addTabs;
+    private InputPanel ip;
     
     public UI(){
         super("Training Tracker");
@@ -43,14 +46,31 @@ public class UI extends JFrame {
     private void initializeComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
+        ip = new InputPanel("Squats");
         tabbedPane = new JTabbedPane();
-        testiPaneeli = new JPanel();
+        addTabs = new JPanel();
+        tabbedPane.addTab(ip.getName(), ip);
+        tabbedPane.addTab("+", addTabs);
         
+        tabbedPane.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+               JTabbedPane tab = (JTabbedPane) e.getSource();
+               if(tab.getTitleAt(tab.getSelectedIndex()).equals("+")){
+                   tabbedPane.remove(tab.getSelectedIndex());
+               String exName = JOptionPane.showInputDialog(null, "Give exercise name");
+                   tabbedPane.add(exName,new InputPanel(exName));
+                   tabbedPane.add("+",null);
+               }
+            }
+        });
         
         setContentPane(tabbedPane);
         pack();
         setVisible(true);
     }
+    
+    //TODO: Add tabs dynamically with "+" tab, and while adding ask the name for the exercise
 
 }

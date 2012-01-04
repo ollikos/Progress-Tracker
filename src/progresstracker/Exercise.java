@@ -22,6 +22,8 @@
  */
 package progresstracker;
 
+import java.util.Date;
+
 /**
  * 
  * Base class for all the exercises
@@ -32,6 +34,28 @@ public class Exercise {
     private int repetitions;
     private float weight;
     private String name; //name of the exercise, ex. Squats
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if(name != null){
+        this.name = name;
+        }
+        else{
+            this.name = "Generic";
+        }
+    }
 
     public Exercise(int sets, int repetitions, int weight) {
         this.sets = sets;
