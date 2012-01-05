@@ -34,7 +34,7 @@ public class InputPanel extends JPanel {
     private JLabel numSets;  //The number of sets
     private JTextField numSetsField;
     private JButton add;
-    private JButton okay;
+    private JButton calculate;
     private List setList;
     private List labelList;
     private String name;
@@ -53,20 +53,18 @@ public class InputPanel extends JPanel {
         this.numSetsField = new JTextField(25);
         this.add = new JButton("Add");
 
-
-        //TODO: make the error messages appear as popups, dialogs
+        //Added function to the add button
         add.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 String temp = numSetsField.getText();
                 if (temp.equals("") || temp == null) {
-                    numSetsField.setText("You must input something");
+                    JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
                         setAmountOfSets(Integer.parseInt(temp));
                     } catch (Exception ex) {
-                        numSetsField.setText("Your input was not valid.");
+                        JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -85,7 +83,7 @@ public class InputPanel extends JPanel {
             this.labelList.add(new JLabel(i + ". Set"));
         }
 
-        //Add one more for the MAX result 
+        //Add one more field + label for the MAX result 
         this.labelList.add(new JLabel("Max"));
         this.setList.add(new JTextField(10));
 
@@ -97,19 +95,21 @@ public class InputPanel extends JPanel {
             add((JTextField) setList.get(i));
         }
 
-        this.okay = new JButton("Calculate");
-        okay.addActionListener(new ActionListener() {
+        //A button for sending the results and showing the initial graph
+        this.calculate = new JButton("Calculate");
+        calculate.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!setListEmpty()) {
                     JOptionPane.showMessageDialog(null, "You must give an input.");
-                }
-                else{
-                   //TODO: Form a Exercice and send it for graphs etc
+                } else {
+                    //TODO: Form a Exercice and send it for graphs etc
                 }
             }
         });
+        
+        add(calculate);
 
         repaint();
         revalidate();
@@ -120,14 +120,15 @@ public class InputPanel extends JPanel {
     private boolean setListEmpty() {
         JTextField temp;
         String tmp;
-        
+
         for (Object o : setList) {
             temp = (JTextField) o;
             tmp = temp.getText();
-            if (!tmp.equals("")) {
+            
+            if (!tmp.equals(""))
                 return false;
-            }
         }
+        
         return true;
     }
 }
