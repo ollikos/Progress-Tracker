@@ -14,15 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 /**
  *
  * @author Olli Koskinen <olli.koskinen@metropolia.fi>
  */
-
-
 package progresstracker;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -32,12 +29,17 @@ import javax.swing.event.ChangeListener;
  *  Class for showing the UI
  */
 public class UI extends JFrame {
+
     private JTabbedPane tabbedPane;
     private JPanel addTabs;
     private InputPanel ip;
-    
-    public UI(){
+    private Controller controller;
+
+    public UI(Controller controller) {
         super("Training Tracker");
+        
+        this.controller = controller;
+        
         initializeComponents();
         setLocationRelativeTo(null);
     }
@@ -45,32 +47,29 @@ public class UI extends JFrame {
     //A place where we initialize all our components and do all the compulsory JFrame stuff
     private void initializeComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        ip = new InputPanel("Squats");
+
+        ip = new InputPanel("Squats", controller);
         tabbedPane = new JTabbedPane();
         addTabs = new JPanel();
         tabbedPane.addTab(ip.getName(), ip);
-        tabbedPane.addTab("+", addTabs);
-        
+        tabbedPane.addTab("+", null);
+
         tabbedPane.addChangeListener(new ChangeListener() {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-               JTabbedPane tab = (JTabbedPane) e.getSource();
-               if(tab.getTitleAt(tab.getSelectedIndex()).equals("+")){
-                   tabbedPane.remove(tab.getSelectedIndex());
-               String exName = JOptionPane.showInputDialog(null, "Give exercise name");
-                   tabbedPane.add(exName,new InputPanel(exName));
-                   tabbedPane.add("+",null);
-               }
+                JTabbedPane tab = (JTabbedPane) e.getSource();
+                if (tab.getTitleAt(tab.getSelectedIndex()).equals("+")) {
+                    tabbedPane.remove(tab.getSelectedIndex());
+                    String exName = JOptionPane.showInputDialog(null, "Give exercise name");
+                    tabbedPane.add(exName, new InputPanel(exName, controller));
+                    tabbedPane.add("+", null);
+                }
             }
         });
-        
+
         setContentPane(tabbedPane);
         pack();
         setVisible(true);
     }
-    
-    //TODO: Add tabs dynamically with "+" tab, and while adding ask the name for the exercise
-
 }

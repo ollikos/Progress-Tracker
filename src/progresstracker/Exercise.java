@@ -14,27 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 /**
  *
  * @author Olli Koskinen <olli.koskinen@metropolia.fi>
  */
 package progresstracker;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
  * Base class for all the exercises
  */
-public class Exercise {
+public class Exercise implements Serializable {
 
     private int sets;
     private int repetitions;
-    private float weight;
+    private float maxWeight;
     private String name; //name of the exercise, ex. Squats
     private Date date;
+    private List setWeights;
+
+    public Exercise(int sets, int repetitions, List setWeights,String name) {
+        this.sets = sets;
+        this.name = name;
+        this.repetitions = repetitions;
+        this.setWeights = setWeights;
+        this.date = new Date();
+        findMaxWeight();
+    }
 
     public Date getDate() {
         return date;
@@ -44,23 +54,24 @@ public class Exercise {
         this.date = date;
     }
 
+    public float getMaxWeight() {
+        return maxWeight;
+    }
+
+    public List getSetWeights() {
+        return setWeights;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        if(name != null){
-        this.name = name;
-        }
-        else{
+        if (name != null) {
+            this.name = name;
+        } else {
             this.name = "Generic";
         }
-    }
-
-    public Exercise(int sets, int repetitions, int weight) {
-        this.sets = sets;
-        this.repetitions = repetitions;
-        this.weight = weight;
     }
 
     public int getRepetitions() {
@@ -68,11 +79,12 @@ public class Exercise {
     }
 
     public void setRepetitions(int repetitions) {
-        if (repetitions >= 0) 
+        if (repetitions >= 0) {
             this.repetitions = repetitions;
-        else 
+        } else {
             this.repetitions = 1;
-        
+        }
+
     }
 
     public int getSets() {
@@ -80,27 +92,43 @@ public class Exercise {
     }
 
     public void setSets(int sets) {
-        if (sets >= 0)
+        if (sets >= 0) {
             this.sets = sets;
-        else 
+        } else {
             this.sets = 1;
+        }
     }
 
     public float getWeight() {
-        return weight;
+        return maxWeight;
     }
 
     public void setWeight(float weight) {
-        if (weight >= 0.0f)
-            this.weight = weight;
-        else
-            this.weight = 1.0f;
+        if (weight >= 0.0f) {
+            this.maxWeight = weight;
+        } else {
+            this.maxWeight = 1.0f;
+        }
     }
-    
-    public float getExercisePoints(){
-        if(repetitions > 0 )
-            return (sets/repetitions)* weight;
-        else
+
+    public float getExercisePoints() {
+        if (repetitions > 0) {
+            return (sets / repetitions) * maxWeight;
+        } else {
             return 1.0f;
+        }
+    }
+
+    //TODO: Get the max weight from the list
+    //A method for getting the max weight from the list, we do not trust 
+    //that the user always gives the highest number to the max field
+    private void findMaxWeight() {
+        float temp = 0;
+        for (int i = 0; i < sets; i++) {
+            float num = (Float) setWeights.get(i);
+            if (num > temp)
+                temp = num;
+        }
+        this.maxWeight = temp;
     }
 }

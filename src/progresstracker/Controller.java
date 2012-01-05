@@ -37,11 +37,17 @@ public class Controller {
         } catch (Exception e) {}
         
         Controller controller = new Controller();
-        UI ui = new UI();
+        UI ui = new UI(controller);
+        
         controller.initializeComponents(ui);
     }
 
     public void initializeComponents(UI ui) {
         this.ui = ui;
+    }
+
+    //TODO: Read and write data from a file.
+    void saveGatheredData(Exercise exercise) {
+       
     }
 }
