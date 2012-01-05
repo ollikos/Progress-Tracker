@@ -31,7 +31,7 @@ import javax.swing.event.ChangeListener;
 public class UI extends JFrame {
 
     private JTabbedPane tabbedPane;
-    private JPanel addTabs;
+    private JPanel mainPanel;
     private InputPanel ip;
     private Controller controller;
 
@@ -50,10 +50,11 @@ public class UI extends JFrame {
 
         ip = new InputPanel("Squats", controller);
         tabbedPane = new JTabbedPane();
-        addTabs = new JPanel();
+        mainPanel = new JPanel();
         tabbedPane.addTab(ip.getName(), ip);
         tabbedPane.addTab("+", null);
-
+        mainPanel.add(tabbedPane);
+        mainPanel.add(new Graph(controller));
         tabbedPane.addChangeListener(new ChangeListener() {
 
             @Override
@@ -68,7 +69,7 @@ public class UI extends JFrame {
             }
         });
 
-        setContentPane(tabbedPane);
+        setContentPane(mainPanel);
         pack();
         setVisible(true);
     }

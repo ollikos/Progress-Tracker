@@ -22,6 +22,7 @@
  */
 
 package progresstracker;
+import java.util.List;
 import javax.swing.UIManager;
 
 
@@ -29,6 +30,7 @@ import javax.swing.UIManager;
 public class Controller {
 
     private UI ui;
+    private Data data;
 
     public static void main(String[] args) {
         //Set the look for the window
@@ -38,16 +40,21 @@ public class Controller {
         
         Controller controller = new Controller();
         UI ui = new UI(controller);
+        Data data = new Data();
         
-        controller.initializeComponents(ui);
+        controller.initializeComponents(ui,data);
     }
 
-    public void initializeComponents(UI ui) {
+    public void initializeComponents(UI ui, Data data) {
         this.ui = ui;
+        this.data = data;
     }
 
-    //TODO: Read and write data from a file.
-    void saveGatheredData(Exercise exercise) {
-       
+    public void saveGatheredData(Exercise exercise) {
+       data.saveExercises(exercise);
     }
+    public List getData(){
+        return data.getList();
+    }
+    
 }

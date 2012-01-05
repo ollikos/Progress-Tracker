@@ -17,15 +17,64 @@
 package progresstracker;
 
 import java.util.*;
+import java.io.*;
+import javax.swing.*;
+
 /**
  *
  * @author Olli Koskinen <olli.koskinen@metropolia.fi>
  */
 public class Data {
+
     private List exercises;
-    
-    public Data(){
-        exercises = new ArrayList<Exercise>();
+
+    public Data() {
+        
     }
-    
+
+    public List getList() {
+        return exercises;
+    }
+
+    void saveExercises(Exercise exercise) {
+        this.exercises.add(exercise);
+
+        backUpData();
+    }
+
+    //TODO: Read and write data from a file.
+    private void backUpData() {
+
+        try {
+            OutputStream file = new FileOutputStream("progres.data");
+            OutputStream buffer = new BufferedOutputStream(file);
+            ObjectOutput out = new ObjectOutputStream(buffer);
+            try {
+                out.writeObject(exercises);
+            } finally {
+                out.close();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error while writing data to file!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void readDataFromFile() {
+        try {
+            InputStream file = new FileInputStream("progres.data");
+            InputStream buffer = new BufferedInputStream(file);
+            ObjectInput in = new ObjectInputStream(buffer);
+            try {
+                //deserialize the List
+                exercises = (List<Exercise>) in.readObject();
+                //display its data
+            } finally {
+                in.close();
+            }
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Class not found while reading from file", "Class not found", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Could not read file", "File I/O failed", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

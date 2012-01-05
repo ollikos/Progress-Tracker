@@ -63,7 +63,6 @@ public class InputPanel extends JPanel {
     private void initializeComponents() {
         setName(name);
         this.numSetsLabel = new JLabel("Number of sets:  ");
-        //TODO: _NO_ magic numbers
         this.numSetsField = new JTextField((int)width/16);
         this.numRepLabel = new JLabel("   Number of reps:   ");
         this.numRepField = new JTextField((int)width/16);
@@ -77,7 +76,7 @@ public class InputPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String temp = numSetsField.getText();
                 if (temp.equals("") || temp == null) {
-                    JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
                         setAmountOfSets(Integer.parseInt(temp));
