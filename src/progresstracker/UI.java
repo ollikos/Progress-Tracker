@@ -50,18 +50,13 @@ public class UI extends JFrame {
     //A place where we initialize all our components and do all the compulsory JFrame stuff
     private void initializeComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        ip = new InputPanel("Squats", controller);
         border = BorderFactory.createEtchedBorder();
         tabbedPane = new JTabbedPane();
-        mainPanel = new JPanel(new GridLayout(2, 2));
-        tabbedPane.addTab(ip.getName(), ip);
-        tabbedPane.addTab("+", null);
 
-        mainPanel.add(tabbedPane);
-        Graph graph = new Graph(controller);
-        graph.setBorder(border);
-        mainPanel.add(graph);
+        String exName = JOptionPane.showInputDialog(null, "Give exercise name");
+        tabbedPane.add(exName, new Tab(exName, controller));
+
+        tabbedPane.addTab("+", null);
         tabbedPane.addChangeListener(new ChangeListener() {
 
             @Override
@@ -70,13 +65,13 @@ public class UI extends JFrame {
                 if (tab.getTitleAt(tab.getSelectedIndex()).equals("+")) {
                     tabbedPane.remove(tab.getSelectedIndex());
                     String exName = JOptionPane.showInputDialog(null, "Give exercise name");
-                    tabbedPane.add(exName, new InputPanel(exName, controller));
+                    tabbedPane.add(exName, new Tab(exName, controller));
                     tabbedPane.add("+", null);
                 }
             }
         });
 
-        setContentPane(mainPanel);
+        setContentPane(tabbedPane);
         pack();
         setVisible(true);
     }

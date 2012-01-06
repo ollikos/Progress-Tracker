@@ -20,6 +20,7 @@
  */
 package progresstracker;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -54,73 +55,89 @@ public class Graph extends JPanel {
         setPreferredSize(new Dimension(width, height));
         setSize(new Dimension(width, height));
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        buffer = (Graphics2D)img.createGraphics();
+        buffer = (Graphics2D) img.createGraphics();
 
-
-        
-        
         tempList = new ArrayList<Exercise>();
         this.controller = controller;
-        this.offset = 10;
+        this.offset = 20;
 
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        
-        this.factor = 1;
-        this.width = img.getWidth();
-        this.height = img.getHeight();
-        //TODO: FIX MEEEEEeee
-        try {
+
+        Graphics2D g2 = (Graphics2D) g.create();
+        if (controller.hasData()) {
+            buffer.setStroke(new BasicStroke(1));
+            this.factor = 1;
+            this.width = img.getWidth();
+            this.height = img.getHeight();
             tempList = controller.getData();
-        } catch (NullPointerException npe) {
-            npe.printStackTrace();
-        }
+
+            buffer.setColor(Color.gray);
+            buffer.fillRect(0, 0, width, height);
+
+            //Drawing the X-axel
+            buffer.setColor(Color.black);
+            buffer.drawLine(0, height - offset, width, height - offset);
+            //Drawing the Y-axel 
+            buffer.drawLine(0 + offset, height, 0 + offset, 0);
 
 
-        buffer.setColor(Color.gray);
-        buffer.fillRect(0, 0, width, height);
-        
-        buffer.setColor(Color.black);
-        //Drawing the X-axel
-        buffer.drawLine(0, height - offset * 2, width, height - offset * 2);
-        //Drawing the Y-axel 
-        buffer.drawLine(0 + offset * 2, height, 0 + offset * 2, 0);
+            if (tempList != null) {
+                for (Object o : tempList) {
+                    Exercise ex = (Exercise) o;
+                    Date d = ex.getDate();
 
-        
-        if (tempList != null) {
-            buffer.setColor(Color.BLUE);
-            for (Object o : tempList) {
-                Exercise ex = (Exercise) o;
-                Date d = ex.getDate();
+                    int setRep = ex.getSetRep();
+                    int multiplier = offset * factor;
+                    int maxWeight = (int) ex.getMaxWeight();
+                    String setReps = ex.getSetReps();
 
-                //Drawing the dates under X- axel
-                buffer.drawString(sdf.format(d), (offset * 2) * factor, super.getHeight() - 5);
 
-                //Drawing the dots
-                /*
-                g.fillOval((offset*2) * factor, height - (int)ex.getMaxWeight(), 6,6);
-                
-                 */
+                    //Drawing the dates under X- axel
+               /* buffer.setColor(Color.black);
+                    buffer.setStroke(new BasicStroke(2));
+                    buffer.drawString(sdf.format(d), multiplier, height - offset);
+                     */
 
-                //Drawing the connected line
-                //We dont want to draw from the origo to the first datapoint
-                if (oldX > 0 && oldY > 0) {
-                    buffer.drawLine(oldX, oldY, (offset * 2) * factor, height - (int) ex.getMaxWeight());
+                    //Drawing the Repetitions per set dots
+                    buffer.setStroke(new BasicStroke(1));
+                    buffer.setColor(new Color(255, 131, 0));
+                    buffer.fillOval(multiplier, height - setRep, 6, 6);
+                    buffer.setColor(Color.black);
+                    buffer.drawOval(multiplier, height - setRep, 6, 6);
+                    //And text for it 
+                    buffer.drawString(setReps, width - 25, height - setRep);
+
+
+                    //Drawing the connected line && a dot for it too
+                    //We dont want to draw from the origo to the first datapoint
+                    if (oldX > 0 && oldY > 0) {
+                        buffer.setStroke(new BasicStroke(2));
+                        buffer.setColor(Color.BLUE);
+                        buffer.drawLine(oldX, oldY, multiplier, height - maxWeight);
+
+                    }
+
+                    //Drawing dots for the connected line so the results are more clear
+                    buffer.setColor(Color.BLUE);
+                    buffer.setStroke(new BasicStroke(1));
+                    buffer.fillOval((multiplier) - 3, (height - maxWeight) - 3, 6, 6);
+                    buffer.setColor(Color.black);
+                    buffer.drawOval((multiplier) - 3, (height - maxWeight) - 3, 6, 6);
+
+                    //Storing the the coords for the next data set
+                    this.oldX = multiplier;
+                    this.oldY = height - maxWeight;
+                    factor += 1;
                 }
-
-                //Storing the the coords for the next data set
-                this.oldX = (offset * 2) * factor;
-                this.oldY = height - (int) ex.getMaxWeight();
-                factor += 1;
+                this.oldX = 0;
+                this.oldY = 0;
             }
-            this.oldX = 0;
-            this.oldY = 0;
-        }
 
-        g.drawImage(img, 0, 0, null);
+            g2.drawImage(img, 0, 0, null);
+        }
     }
 }

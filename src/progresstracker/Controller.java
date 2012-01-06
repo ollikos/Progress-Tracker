@@ -14,17 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 /**
  *
  * @author Olli Koskinen <olli.koskinen@metropolia.fi>
  */
-
 package progresstracker;
+
 import java.util.List;
 import javax.swing.UIManager;
-
 
 //A controller class for UI and models, and a main method
 public class Controller {
@@ -34,15 +31,16 @@ public class Controller {
 
     public static void main(String[] args) {
         //Set the look for the window
-         try {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {}
-        
+        } catch (Exception e) {
+        }
+
         Controller controller = new Controller();
         UI ui = new UI(controller);
         Data data = new Data(controller);
-        
-        controller.initializeComponents(ui,data);
+
+        controller.initializeComponents(ui, data);
     }
 
     public void initializeComponents(UI ui, Data data) {
@@ -51,14 +49,22 @@ public class Controller {
     }
 
     public void saveGatheredData(Exercise exercise) {
-       data.saveExercises(exercise);
+        data.saveExercises(exercise);
     }
-    public List getData(){
+
+    public List getData() {
         return data.getList();
     }
 
-    void updateScreen() {
+    public void updateScreen() {
         ui.repaint();
     }
-    
+
+    public boolean hasData() {
+        if (data == null) {
+            return false;
+        } else {
+            return data.hasData();
+        }
+    }
 }

@@ -46,9 +46,7 @@ public class Data {
         controller.updateScreen();
     }
 
-    //TODO: Read and write data from a file.
     private void backUpData() {
-
         try {
             OutputStream file = new FileOutputStream("progres.data");
             OutputStream buffer = new BufferedOutputStream(file);
@@ -80,5 +78,12 @@ public class Data {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Could not read file", "File I/O failed", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public boolean hasData() {
+        if(exercises != null && !exercises.isEmpty()){
+            return true;
+        }
+        else return false;
     }
 }

@@ -36,6 +36,7 @@ public class Exercise implements Serializable {
     private String name; //name of the exercise, ex. Squats
     private Date date;
     private List setWeights;
+    private String setReps;
 
     public Exercise(int sets, int repetitions, List setWeights,String name) {
         this.sets = sets;
@@ -44,6 +45,27 @@ public class Exercise implements Serializable {
         this.setWeights = setWeights;
         this.date = new Date();
         findMaxWeight();
+        setAndRepsToString();
+    }
+    
+    
+    //A method for getting the max weight from the list, we do not trust 
+    //that the user always gives the highest number to the max field
+    private void findMaxWeight() {
+        float temp = 0;
+        for (int i = 0; i < sets; i++) {
+            float num = (Float) setWeights.get(i);
+            if (num > temp)
+                temp = num;
+        }
+        this.maxWeight = temp;
+    }
+    
+    public int getSetRep(){
+        return sets*repetitions;
+    }
+    public String getSetReps(){
+        return setReps;
     }
 
     public Date getDate() {
@@ -118,17 +140,8 @@ public class Exercise implements Serializable {
             return 1.0f;
         }
     }
-
-    //TODO: Get the max weight from the list
-    //A method for getting the max weight from the list, we do not trust 
-    //that the user always gives the highest number to the max field
-    private void findMaxWeight() {
-        float temp = 0;
-        for (int i = 0; i < sets; i++) {
-            float num = (Float) setWeights.get(i);
-            if (num > temp)
-                temp = num;
-        }
-        this.maxWeight = temp;
+    
+    private void setAndRepsToString() {
+       this.setReps = sets + "x" + repetitions;
     }
 }

@@ -58,7 +58,7 @@ public class InputPanel extends JPanel {
         height = 350;
 
         setPreferredSize(new Dimension(width, height));
-                setSize(new Dimension(width, height));
+        setSize(new Dimension(width, height));
         initializeComponents();
     }
 
@@ -71,17 +71,20 @@ public class InputPanel extends JPanel {
         this.add = new JButton("Add");
 
 
-        //Added function to the add button
+        //function to the add button
         add.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String temp = numSetsField.getText();
-                if (temp.equals("") || temp == null) {
-                    JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
+                String numSetsTemp = numSetsField.getText();
+                String numRepsTemp = numRepField.getText();
+
+                if (numSetsTemp.equals("") || numSetsTemp == null || numRepsTemp.equals("") || numRepsTemp == null) {
+                    JOptionPane.showMessageDialog(null, "You must fill the fields first", "No input", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
-                        setAmountOfSets(Integer.parseInt(temp));
+                        setAmountOfSets(Integer.parseInt(numSetsTemp));
+                        setAmountOfReps(Integer.parseInt(numRepsTemp));
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
                     }
@@ -104,6 +107,7 @@ public class InputPanel extends JPanel {
             this.labelList.add(new JLabel(i + ". Set"));
         }
 
+
         //Add one more field + label for the MAX result 
         this.labelList.add(new JLabel("Max"));
         this.setList.add(new JTextField(10));
@@ -115,6 +119,7 @@ public class InputPanel extends JPanel {
             add((JLabel) labelList.get(i));
             add((JTextField) setList.get(i));
         }
+        
 
         //A button for sending the results and showing the initial graph
         this.calculate = new JButton("Calculate");
@@ -139,21 +144,25 @@ public class InputPanel extends JPanel {
 
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Bad input types.", "Bad input", JOptionPane.ERROR_MESSAGE);
-                        ex.printStackTrace();         
+                        ex.printStackTrace();
                     }
-                    //TODO: Form a Exercice and send it for graphs etc
-                    //TODO: First form has, on the x-axel the date, and on the y-axel both, Max weight and the sets and repetitions as  a string
+                    //TODO: For every exercise, there is a unique graph 
                     //TODO: add a date selector from witch you can select two dates  -> Draw a graph from those
                 }
             }
         });
 
         add(calculate);
-
         repaint();
         revalidate();
     }
+    
 
+    private void setAmountOfReps(int reps) {
+        this.repetitions = reps;
+    }
+
+    
     //A Method for checking if the JTextFields are empty
     private boolean setListHasEmpty() {
         JTextField temp;
