@@ -40,7 +40,7 @@ public class Controller {
         
         Controller controller = new Controller();
         UI ui = new UI(controller);
-        Data data = new Data();
+        Data data = new Data(controller);
         
         controller.initializeComponents(ui,data);
     }
@@ -55,6 +55,10 @@ public class Controller {
     }
     public List getData(){
         return data.getList();
+    }
+
+    void updateScreen() {
+        ui.repaint();
     }
     
 }

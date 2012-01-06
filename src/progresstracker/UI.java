@@ -20,7 +20,9 @@
  */
 package progresstracker;
 
+import java.awt.GridLayout;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -34,12 +36,13 @@ public class UI extends JFrame {
     private JPanel mainPanel;
     private InputPanel ip;
     private Controller controller;
+    private Border border;
 
     public UI(Controller controller) {
         super("Training Tracker");
-        
+
         this.controller = controller;
-        
+
         initializeComponents();
         setLocationRelativeTo(null);
     }
@@ -49,12 +52,16 @@ public class UI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ip = new InputPanel("Squats", controller);
+        border = BorderFactory.createEtchedBorder();
         tabbedPane = new JTabbedPane();
-        mainPanel = new JPanel();
+        mainPanel = new JPanel(new GridLayout(2, 2));
         tabbedPane.addTab(ip.getName(), ip);
         tabbedPane.addTab("+", null);
+
         mainPanel.add(tabbedPane);
-        mainPanel.add(new Graph(controller));
+        Graph graph = new Graph(controller);
+        graph.setBorder(border);
+        mainPanel.add(graph);
         tabbedPane.addChangeListener(new ChangeListener() {
 
             @Override

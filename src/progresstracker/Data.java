@@ -27,9 +27,12 @@ import javax.swing.*;
 public class Data {
 
     private List exercises;
+    private Controller controller;
+    
 
-    public Data() {
-        
+    public Data(Controller controller) {
+        this.controller  = controller;
+        exercises = new ArrayList<Exercise>();
     }
 
     public List getList() {
@@ -40,6 +43,7 @@ public class Data {
         this.exercises.add(exercise);
 
         backUpData();
+        controller.updateScreen();
     }
 
     //TODO: Read and write data from a file.

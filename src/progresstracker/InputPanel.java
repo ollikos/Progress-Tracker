@@ -35,7 +35,8 @@ public class InputPanel extends JPanel {
     private JTextField numSetsField;
     private JButton add;
     private JLabel numRepLabel;  //The number of sets
-    private JTextField numRepField;;
+    private JTextField numRepField;
+    ;
     private JButton calculate;
     private List setList;
     private List labelList;
@@ -52,23 +53,24 @@ public class InputPanel extends JPanel {
         this.controller = controller;
         setList = new ArrayList<JTextField>();
         labelList = new ArrayList<JLabel>();
-        
-        width = 350;
-        height = 150;
-        
+
+        width = 640;
+        height = 350;
+
         setPreferredSize(new Dimension(width, height));
+                setSize(new Dimension(width, height));
         initializeComponents();
     }
 
     private void initializeComponents() {
         setName(name);
         this.numSetsLabel = new JLabel("Number of sets:  ");
-        this.numSetsField = new JTextField((int)width/16);
+        this.numSetsField = new JTextField((int) width / 16);
         this.numRepLabel = new JLabel("   Number of reps:   ");
-        this.numRepField = new JTextField((int)width/16);
+        this.numRepField = new JTextField((int) width / 16);
         this.add = new JButton("Add");
 
-        
+
         //Added function to the add button
         add.addActionListener(new ActionListener() {
 
@@ -76,25 +78,27 @@ public class InputPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String temp = numSetsField.getText();
                 if (temp.equals("") || temp == null) {
-                        JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
                         setAmountOfSets(Integer.parseInt(temp));
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "You must input something first.", "No input", JOptionPane.ERROR_MESSAGE);
                     }
-                }}});
+                }
+            }
+        });
 
         add(numSetsLabel);
         add(numSetsField);
         add(numRepLabel);
         add(numRepField);
-        add(add,BOTTOM_ALIGNMENT);  //Yo dawg?
+        add(add, BOTTOM_ALIGNMENT);  //Yo dawg?
     }
 
     //A method that draws custom amount of inputfields
     private void setAmountOfSets(int sets) {
-        this.numSets = sets ;
+        this.numSets = sets;
         for (int i = 1; i <= sets; i++) {
             this.setList.add(new JTextField(10));
             this.labelList.add(new JLabel(i + ". Set"));
@@ -121,20 +125,21 @@ public class InputPanel extends JPanel {
                 if (setListHasEmpty()) {
                     JOptionPane.showMessageDialog(null, "You must fill all the fields", "Empty field(s)", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
+
                     //read the weight data from the fields and parse it
                     try {
                         List setWeights = new ArrayList<Float>();
                         for (int i = 0; i < numSets + 1; i++) {
-                            JTextField temp = (JTextField)setList.get(i);
+                            JTextField temp = (JTextField) setList.get(i);
                             setWeights.add(Float.parseFloat(temp.getText()));
                         }
                         // + 1 for the MAX weight
-                        controller.saveGatheredData(new Exercise(numSets + 1 ,repetitions, setWeights,name));
-                        
-                        
+                        controller.saveGatheredData(new Exercise(numSets + 1, repetitions, setWeights, name));
+
+
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Bad input types.", "Bad input", JOptionPane.ERROR_MESSAGE);
+                        ex.printStackTrace();         
                     }
                     //TODO: Form a Exercice and send it for graphs etc
                     //TODO: First form has, on the x-axel the date, and on the y-axel both, Max weight and the sets and repetitions as  a string
