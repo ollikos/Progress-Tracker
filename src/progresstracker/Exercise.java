@@ -142,6 +142,6 @@ public class Exercise implements Serializable {
     }
     
     private void setAndRepsToString() {
-       this.setReps = sets + "x" + repetitions;
+       this.setReps = (sets-1) + "x" + repetitions;
     }
 }

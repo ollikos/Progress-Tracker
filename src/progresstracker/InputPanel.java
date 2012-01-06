@@ -119,12 +119,15 @@ public class InputPanel extends JPanel {
             add((JLabel) labelList.get(i));
             add((JTextField) setList.get(i));
         }
-        
+
 
         //A button for sending the results and showing the initial graph
         this.calculate = new JButton("Calculate");
         calculate.addActionListener(new ActionListener() {
 
+            
+            //TODO: Jos max tyhjä, hae se annetuista seteistä.
+            //TODO: Calculaten jälkeen resetoi näkymä, jotta voidaan antaa uudet setit + repet
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (setListHasEmpty()) {
@@ -146,7 +149,6 @@ public class InputPanel extends JPanel {
                         JOptionPane.showMessageDialog(null, "Bad input types.", "Bad input", JOptionPane.ERROR_MESSAGE);
                         ex.printStackTrace();
                     }
-                    //TODO: For every exercise, there is a unique graph 
                     //TODO: add a date selector from witch you can select two dates  -> Draw a graph from those
                 }
             }
@@ -156,13 +158,11 @@ public class InputPanel extends JPanel {
         repaint();
         revalidate();
     }
-    
 
     private void setAmountOfReps(int reps) {
         this.repetitions = reps;
     }
 
-    
     //A Method for checking if the JTextFields are empty
     private boolean setListHasEmpty() {
         JTextField temp;

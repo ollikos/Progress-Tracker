@@ -85,6 +85,9 @@ public class Graph extends JPanel {
             buffer.drawLine(0 + offset, height, 0 + offset, 0);
 
 
+            
+            //TODO: Data toimitetaan Mappian jossa avain & arvo parina toimii ArrayList<Exercise> ja tabin nimi  jolloin jokaiselle tabille saadaan omat tiedostonsa
+            
             if (tempList != null) {
                 for (Object o : tempList) {
                     Exercise ex = (Exercise) o;
