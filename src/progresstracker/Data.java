@@ -16,9 +16,10 @@
  */
 package progresstracker;
 
-import java.util.*;
 import java.io.*;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
